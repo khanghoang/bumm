@@ -1,5 +1,6 @@
-var <%=model.singularCapitalized%> = require('<%=model.relativeRootPath%>/models/<%=model.path%>'),
-    mapper = require('<%=model.relativeRootPath%>/lib/model-mapper');
+var path = require("path");
+var <%=model.singularCapitalized%> = require(path.join("..", '<%=model.relativeRootPath%>/models/<%=model.path%>')),
+    mapper = require(path.join("..", '<%=model.relativeRootPath%>/lib/model-mapper'));
 
 module.exports.Route = function(route) {
 
