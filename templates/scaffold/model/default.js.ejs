@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var CreateUpdatedAt = require('mongoose-timestamp');
 
 var <%= model.singularCapitalized %> = new Schema({
 <% for(var i in properties) { -%>
@@ -10,5 +11,17 @@ var <%= model.singularCapitalized %> = new Schema({
 <%= i<properties.length-1?',':''%>
 <% } -%>
 });
+
+UserSchema.plugin(CreateUpdatedAt);
+
+/**
+ * Methods
+ */
+
+UserSchema.methods = {
+    /**
+    * Model methods insert here
+    */
+}
 
 module.exports = mongoose.model('<%= model.singularCapitalized %>', <%= model.singularCapitalized %>);
