@@ -1,4 +1,4 @@
-extends <%=model.relativeRootPath%>/layout
+extends <%=model.relativeRootPath%>/layouts/default
 
 block content
   h2.display-data Delete <%= model.singularCapitalized %>?
@@ -17,4 +17,5 @@ block content
     .form-actions
       a.btn.btn-warning(href="<%=model.route%>") Back
       | 
+      input#_csrf(type='hidden', name='_csrf', value="#{_csrf}")
       input.btn.btn-danger(type="submit", value="Delete")
