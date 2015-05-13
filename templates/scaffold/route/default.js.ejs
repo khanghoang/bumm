@@ -1,9 +1,9 @@
 var <%=model.singularCapitalized%> = require('<%=model.relativeRootPath%>/models/<%=model.path%>'),
     mapper = require('<%=model.relativeRootPath%>/lib/model-mapper');
 
-module.exports = function(app) {
+module.exports.Route = function(route) {
 
-    app.param('<%=model.singular%>Id', function(req, res, next, id) {
+    route.param('<%=model.singular%>Id', function(req, res, next, id) {
         <%=model.singularCapitalized%>.findById(id, function(err, <%=model.singular%>) {
             if (err) {
                 next(err);
@@ -14,17 +14,23 @@ module.exports = function(app) {
         });
     });
     
-    app.get('<%=model.route%>', function(req, res) {
+    route.get('<%=model.route%>', function(req, res) {
         <%=model.singularCapitalized%>.find({}, function(err, <%=model.plural%>) {
-            res.render('<%=model.path%>/index', { <%=model.plural%> : <%=model.plural%> });
+            res.render('<%=model.path%>/index', { 
+                <%=model.plural%> : <%=model.plural%>,
+                _csrf: res.locals._csrf
+            });
         });
     });
 
-    app.get('<%=model.route%>/create', function(req, res) {
-        res.render('<%=model.path%>/create', { <%=model.singular%> : new <%=model.singularCapitalized%>() });
+    route.get('<%=model.route%>/create', function(req, res) {
+        res.render('<%=model.path%>/create', { 
+        <%=model.singular%> : new <%=model.singularCapitalized%>(),
+        _csrf: res.locals._csrf
+        });
     });
 
-    app.post('<%=model.route%>/create', function(req, res) { 
+    route.post('<%=model.route%>/create', function(req, res) { 
         var <%=model.singular%> = new <%=model.singularCapitalized%>(req.body);
 
         <%=model.singular%>.save(function(err) {
@@ -38,11 +44,13 @@ module.exports = function(app) {
         });
     });
 
-    app.get('<%=model.route%>/:<%=model.singular%>Id/edit', function(req, res) {
-        res.render('<%=model.path%>/edit');
+    route.get('<%=model.route%>/:<%=model.singular%>Id/edit', function(req, res) {
+        res.render('<%=model.path%>/edit', {
+            _csrf: res.locals._csrf
+        });
     });
 
-    app.post('<%=model.route%>/:<%=model.singular%>Id/edit', function(req, res) {
+    route.post('<%=model.route%>/:<%=model.singular%>Id/edit', function(req, res) {
         mapper.map(req.body).to(res.locals.<%=model.singular%>);
 
         res.locals.<%=model.singular%>.save(function(err) {
@@ -54,15 +62,17 @@ module.exports = function(app) {
         });
     });
 
-    app.get('<%=model.route%>/:<%=model.singular%>Id/detail', function(req, res) {
+    route.get('<%=model.route%>/:<%=model.singular%>Id/detail', function(req, res) {
         res.render('<%=model.path%>/detail');
     });
 
-    app.get('<%=model.route%>/:<%=model.singular%>Id/delete', function(req, res) {
-        res.render('<%=model.path%>/delete');
+    route.get('<%=model.route%>/:<%=model.singular%>Id/delete', function(req, res) {
+        res.render('<%=model.path%>/delete', {
+            _csrf: res.locals._csrf
+        });
     });
 
-    app.post('<%=model.route%>/:<%=model.singular%>Id/delete', function(req, res) {
+    route.post('<%=model.route%>/:<%=model.singular%>Id/delete', function(req, res) {
         <%=model.singularCapitalized%>.remove({ _id : req.params.<%=model.singular%>Id }, function(err) {
             res.redirect('<%=model.route%>');
         });
