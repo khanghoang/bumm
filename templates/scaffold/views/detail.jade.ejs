@@ -1,4 +1,4 @@
-extends <%=model.relativeRootPath%>/layout
+extends <%=model.relativeRootPath%>/layouts/layout
 
 block content
   h2.display-data <%= model.singularCapitalized %> Detail
@@ -18,4 +18,5 @@ block content
     | 
     a.btn.btn-primary(href="<%=model.route%>/" + <%=model.singular%>._id + "/edit") Edit
     | 
+    input#_csrf(type='hidden', name='_csrf', value="#{_csrf}")
     a.btn.btn-danger(href="<%=model.route%>/" + <%=model.singular%>._id + "/delete") Delete
