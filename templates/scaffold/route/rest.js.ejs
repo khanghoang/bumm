@@ -1,9 +1,9 @@
 var <%=model.singularCapitalized%> = require('<%=model.relativeRootPath%>/models/<%=model.path%>'),
     mapper = require('<%=model.relativeRootPath%>/lib/model-mapper');
 
-module.exports = function(app) {
+module.exports.Route = function(route) {
 
-    app.param('<%=model.singular%>Id', function(req, res, next, id) {
+    route.param('<%=model.singular%>Id', function(req, res, next, id) {
         <%=model.singularCapitalized%>.findById(id, function(err, <%=model.singular%>) {
             if (err) {
                 return next(err);
@@ -18,13 +18,13 @@ module.exports = function(app) {
         });
     });
     
-    app.get('<%=model.route%>', function(req, res) {
+    route.get('<%=model.route%>', function(req, res) {
         <%=model.singularCapitalized%>.find({}, function(err, <%=model.plural%>) {
             res.json(<%=model.plural%>);
         });
     });
 
-    app.post('<%=model.route%>', function(req, res) { 
+    route.post('<%=model.route%>', function(req, res) { 
         var <%=model.singular%> = new <%=model.singularCapitalized%>(req.body);
 
         <%=model.singular%>.save(function(err) {
@@ -36,11 +36,11 @@ module.exports = function(app) {
         });
     });
 
-    app.get('<%=model.route%>/:<%=model.singular%>Id', function(req, res) {
+    route.get('<%=model.route%>/:<%=model.singular%>Id', function(req, res) {
         res.json(res.locals.<%=model.singular%>);
     });
 
-    app.put('<%=model.route%>/:<%=model.singular%>Id', function(req, res) {
+    route.put('<%=model.route%>/:<%=model.singular%>Id', function(req, res) {
         var <%=model.singular%> = res.locals.<%=model.singular%>;
         mapper.map(req.body).to(<%=model.singular%>);
 
@@ -53,7 +53,7 @@ module.exports = function(app) {
         });
     });
 
-    app.delete('<%=model.route%>/:<%=model.singular%>Id/delete', function(req, res) {
+    route.delete('<%=model.route%>/:<%=model.singular%>Id/delete', function(req, res) {
         <%=model.singularCapitalized%>.remove({ _id : req.params.<%=model.singular%>Id }, function(err) {
             if (err) {
                 res.json(400, err);
