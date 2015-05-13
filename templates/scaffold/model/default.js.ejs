@@ -12,13 +12,13 @@ var <%= model.singularCapitalized %> = new Schema({
 <% } -%>
 });
 
-UserSchema.plugin(CreateUpdatedAt);
+<%= model.singularCapitalized %>.plugin(CreateUpdatedAt);
 
 /**
  * Methods
  */
 
-UserSchema.methods = {
+<%= model.singularCapitalized %>.methods = {
     /**
     * Model methods insert here
     */
